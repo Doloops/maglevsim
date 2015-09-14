@@ -1,2 +1,2 @@
 # maglevsim
-Maglev Simulator
+Simple Maglev Simulator

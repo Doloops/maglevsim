@@ -91,9 +91,9 @@ function sym()
             });
             rigidConstraints.distanceConstraint(aimant1, chassis, 1.0);
             rigidConstraints.distanceConstraint(aimant2, chassis, 1.0);
-	    rigidConstraints.distanceConstraint(aimant1, chassis2, 1.0);
+			rigidConstraints.distanceConstraint(aimant1, chassis2, 1.0);
             rigidConstraints.distanceConstraint(aimant2, chassis2, 1.0);
-	    rigidConstraints.distanceConstraint(chassis, chassis2, 1.0);
+			rigidConstraints.distanceConstraint(chassis, chassis2, 1.0);
             rigidConstraints.angleConstraint(aimant1, chassis, aimant2, 1.0);
             world.add(rigidConstraints);
             
@@ -111,71 +111,71 @@ function sym()
                         
             function computeMagnet(time, aimant, magnet, mtgt, rightPos)
             {
-		// Compute the reflection point of the magnet
-		var lpointRel = new Physics.vector(0, -aimant.width);
-		var lpointWorld = aimant.toWorldCoords(lpointRel);
-		var lvect = lpointWorld.clone().vsub(aimant.state.pos);
-		var yrail = rail.state.pos.y + rail.height / 2;
-		var yratio = (yrail - aimant.state.pos.y) / lvect.y;
-		var lvectRail = new Physics.vector(lvect.x * yratio, yrail - aimant.state.pos.y);
-		var pointToRail = lvectRail.clone().vsub(lvect);
-		var reflectPoint = pointToRail.mult(2);		
+				// Compute the reflection point of the magnet
+				var lpointRel = new Physics.vector(0, -aimant.width);
+				var lpointWorld = aimant.toWorldCoords(lpointRel);
+				var lvect = lpointWorld.clone().vsub(aimant.state.pos);
+				var yrail = rail.state.pos.y + rail.height / 2;
+				var yratio = (yrail - aimant.state.pos.y) / lvect.y;
+				var lvectRail = new Physics.vector(lvect.x * yratio, yrail - aimant.state.pos.y);
+				var pointToRail = lvectRail.clone().vsub(lvect);
+				var reflectPoint = pointToRail.mult(2);		
 		
                 var maxVelx = Math.PI / 16;
                 var deltaX = targetX - chassis.state.pos.x;
                 var deltaXsgn = deltaX > 0 ? 1 : -1;
                 
-		var velx = 0;
-		if ( true || deltaXsgn == rightPos )
-		{
-			if (Math.abs(chassis.state.vel.x) > 0.08)
-			{
-			    velx = maxVelx * (chassis.state.vel.x > 0 ? -1 : 1);
-			}
-		        else if ( Math.abs(deltaX) > 80 )
-		        {
-		            velx = maxVelx * deltaXsgn;
-		        }
-		        else if ( Math.abs(deltaX) > 2)
-		        {
-			    velx = Math.max(Math.pow(chassis.state.vel.x,2) / Math.abs(deltaX), maxVelx);
-			    if ( Math.abs(chassis.state.vel.x) > 0.01 )
-			    {	
-			       drgSgn = ((deltaX * chassis.state.vel.x) > 0) ? 1 : -1;	
-	  		    }
-			    else
-			    {
-				drgSgn = -1;
-			    }
-		            velx *= -deltaXsgn * drgSgn; // -chassis.state.vel.x * Math.abs(deltaX);
-			  
-		        }
-			else
-			{
-			    velx = 0;
-			}
-		}
-		// console.log(chassis.state);
+				var velx = 0;
+				if ( true || deltaXsgn == rightPos )
+				{
+					if (Math.abs(chassis.state.vel.x) > 0.08)
+					{
+						velx = maxVelx * (chassis.state.vel.x > 0 ? -1 : 1);
+					}
+						else if ( Math.abs(deltaX) > 80 )
+						{
+							velx = maxVelx * deltaXsgn;
+						}
+						else if ( Math.abs(deltaX) > 2)
+						{
+						velx = Math.max(Math.pow(chassis.state.vel.x,2) / Math.abs(deltaX), maxVelx);
+						if ( Math.abs(chassis.state.vel.x) > 0.01 )
+						{	
+						   drgSgn = ((deltaX * chassis.state.vel.x) > 0) ? 1 : -1;	
+						}
+						else
+						{
+						drgSgn = -1;
+						}
+							velx *= -deltaXsgn * drgSgn; // -chassis.state.vel.x * Math.abs(deltaX);
+					  
+						}
+					else
+					{
+						velx = 0;
+					}
+				}
+				// console.log(chassis.state);
                 // console.log("diff=" + (targetX - chassis.state.pos.x) + ", vel:" + chassis.state.vel.x + ", acc:" + chassis.state.acc.x + ", velx=" + velx);
                 // console.log(aimant);
                 // mtgt.state.pos.x = aimant.state.pos.x + velx;
-		aimant.velx = velx;
-		reflectPoint.rotate(velx);
-		var absReflectPoint = lpointWorld.clone().vadd(reflectPoint);
-		mtgt.state.pos = absReflectPoint;
+				aimant.velx = velx;
+				reflectPoint.rotate(velx);
+				var absReflectPoint = lpointWorld.clone().vadd(reflectPoint);
+				mtgt.state.pos = absReflectPoint;
                 magnet.position(absReflectPoint);
-		aimant.absReflectPoint = absReflectPoint;
+				aimant.absReflectPoint = absReflectPoint;
 
-		// console.log("pointToRail dist :" + pointToRail.norm());
+				// console.log("pointToRail dist :" + pointToRail.norm());
 
                 // console.log("pos:" + aimant.state.pos.y + ",vel:" + aimant.state.vel + ", strength:" + magnet.options.strength);
-		var dist = pointToRail.norm();
+				var dist = pointToRail.norm();
                 if (dist > limyPosActive || aimant.state.vel.y >= limyVelActivate )
                 {
                     // console.log(aimant.state.pos.y + ",vel:" + aimant1.state.vel.y + ", active");
                     magnet.options.strength = currentStrength;
-			// Math.min(Math.pow(dist - limyPosActive, 2), currentStrength); 
-			// Math.min(currentStrength, currentStrength * (deltaY / 10));
+					// Math.min(Math.pow(dist - limyPosActive, 2), currentStrength); 
+					// Math.min(currentStrength, currentStrength * (deltaY / 10));
                     if ( false && aimant.styles.fillStyle != "red" )
                     {
                         aimant.styles.fillStyle = "red";
@@ -211,26 +211,28 @@ function sym()
                         
             world.on('step', function(){
                 world.render();
-		var aimant = aimant1;
+				var aimant = aimant1;
 		
-		renderer.drawLine(aimant1.state.pos, aimant1.absReflectPoint, "yellow");
-		renderer.drawLine(aimant2.state.pos, aimant2.absReflectPoint, "yellow");
+				renderer.drawLine(aimant1.state.pos, aimant1.absReflectPoint, "yellow");
+				renderer.drawLine(aimant2.state.pos, aimant2.absReflectPoint, "yellow");
 		//		renderer.drawLine(aimant.state.pos, lpointWorld.clone().vadd(reflectPoint), "yellow");		
             });
             
             world.add( Physics.behavior('constant-acceleration') );
             
-            world.add( Physics.behavior('edge-collision-detection', {
-                aabb: Physics.aabb(0, 0, renderer.width, renderer.height),
-		restitution: 0.3
-            }) );
-            
-            // ensure objects bounce when edge collision is detected
-            world.add( Physics.behavior('body-impulse-response', {bodyExtractDropoff: 0.2}) );
-            
-            world.add( Physics.behavior('body-collision-detection') );
-            world.add( Physics.behavior('sweep-prune') );            
-
+            if ( true )
+            {
+				world.add( Physics.behavior('edge-collision-detection', {
+					aabb: Physics.aabb(0, 0, renderer.width, renderer.height),
+					restitution: 0.3
+				}) );
+				
+				// ensure objects bounce when edge collision is detected
+				world.add( Physics.behavior('body-impulse-response', {bodyExtractDropoff: 0.2}) );
+				
+				world.add( Physics.behavior('body-collision-detection') );
+				world.add( Physics.behavior('sweep-prune') );            
+			}
             // world.add( Physics.behavior('interactive', { el: renderer.container }) );
 
              var colors = [
@@ -245,6 +247,8 @@ function sym()
                 ];
                 
             var startTime = null;
+            var lastTime = 0;
+            var vely = { lastValue:0, k: 0, m: 0, s: 0};
                 
             // subscribe to ticker to advance the simulation
             Physics.util.ticker.on(function( time, dt ){
@@ -261,12 +265,30 @@ function sym()
                 {
                     startTime = time;
                 }
+                var deltaTime = time - lastTime;
+                lastTime = time;
+                
                 computeMagnet(time, aimant1, magnet1, mtgt1, -1);
                 computeMagnet(time, aimant2, magnet2, mtgt2, 1);    
                 
                 var simDuration = time - startTime;
                 // console.log("time=" + simDuration + ", dt=" + dt + ",mg1:" + magnet1.options.strength + ",fS=" + aimant1.styles.fillStyle);
                 world.step( time );
+
+				if ( vely.k == 0 )
+				{
+					vely.lastValue = chassis.state.vel.y;
+				}
+				if ( vely.k < 10 )
+				{
+					vely.k++;
+				}
+				
+				var dvy = chassis.state.vel.y - vely.lastValue;
+				var newvely = Physics.statistics.pushRunningAvg(dvy, vely.k, vely.m, vely.s);
+				vely.m = newvely[0];
+				vely.s = newvely[1];
+				vely.lastValue = chassis.state.vel.y;
                 
                 var tgt = document.getElementById("tgt")
                 try {
@@ -279,10 +301,20 @@ function sym()
                             + ", strg=" + (magnet2.options.strength != null ? magnet2.options.strength.toFixed(3) : "null")
                             + ", dY=" + (aimant2.state.pos.y - limyPosActive).toFixed(3)
                     + ", %1.pos.y=" + aimant1.state.pos.y.toFixed(2) + ", %1.velx=" + aimant1.velx.toFixed(4)
-		    + "<br>"
+		        + "<br>"
 	            + "chassis.pos.x:" + chassis.state.pos.x.toFixed(3) + ", chassis.vel.x:" + chassis.state.vel.x.toFixed(3)
-                    
-                    ;
+	            + ", chassis.pos.y:" + chassis.state.pos.y.toFixed(3)
+	            + ", chassis.vel.y:" + chassis.state.vel.y.toFixed(3)
+	            + ", chassis.accl.y:" + chassis.state.acc.y.toExponential()
+	            + "<br>"
+				+ ", chassis.vel.y[AVG]:" + vely.k + "," + vely.m.toFixed(5) + "," + vely.s.toFixed(5)
+				 + ", / dvy=" + dvy.toFixed(8) + ", deltaTime=" + deltaTime.toFixed(5)
+				 + " (dvy/dt)=" + (dvy / deltaTime).toFixed(8)
+	            ;
+	            /*
+					tgt.innerHtml += "<br>"
+						+ "chassis.vel.y[AVG]:" + vely.m;
+						*/
                 } catch(e) {
                     tgt.innerHTML += e;
                 }
